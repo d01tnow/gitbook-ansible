@@ -25,7 +25,7 @@ ansible 192.168.1.1 -m ping
 ``` shell
 ansible-doc -s command
 - name: 该任务的名称
-  action: command
+  command
     chdir:  # 执行命令前先改变到工作目录
     creates: # 后指定一个文件名或者 glob 模式, 指定的文件存在时, 不执行命令
     removes: # 后指定一个文件名或者 glob 模式, 指定的文件不存在时, 不执行命令
@@ -46,7 +46,7 @@ ansible all -a "creates=/path/to/file ip a"
 ```shell
 ansible-doc -s shell
 - name: 该任务的名称
-  action: shell
+  shell
     free_from: # 必须. 并没有 free_from 选项. 用执行的命令和参数代替.
     chdir:  # 执行命令前先改变到工作目录
     creates: # 后指定一个文件名或者 glob 模式, 指定的文件存在时, 不执行命令
@@ -71,7 +71,7 @@ ansible all -m shell -a "echo new_password | passwd --stdin user-name"
 ``` shell
 ansible-doc -s script
 - name: 该任务的名称
-  action: script
+  script
     free_from: # 必须. 本地脚本路径.
     chdir:  # 执行脚本前先改变到工作目录
     creates: # 后指定一个文件名, 指定的文件存在时, 不执行命令
@@ -90,7 +90,7 @@ ansible all -m script -a '/root/test-script.sh'
 ``` shell
 ansible-doc -s yum
 - name: 使用 yum 管理目标机器上的软件包
-  action: yum
+  yum:
     conf_file: # yum 的配置文件
     enablerepo: # 启用某个源. comma 分割多个源.
     disablerepo: # 禁用某个源. comma 分割多个源.
@@ -119,7 +119,7 @@ ansible all -m yum -a "name=* state=latest update_cache=yes"
 ansible-doc -s group
 
 - name: 添加 or 移除组
-  action: group
+  group:
     name: # 必选. 组名.
     gid: # 可选, 设置组ID
     state: # present: 添加组; absent: 移除组
@@ -133,7 +133,7 @@ ansible-doc -s group
 ansible-doc -s user
 
 - name: 管理用户: 添加, 删除, 修改密码
-  action: user
+  user:
     name: # 用户名
     password: # 密码, 必须是加密后的字符串.
     update_password: # always: 更新密码. on_create: 仅对新创建用户设置该密码
@@ -161,7 +161,7 @@ ansible all -m user -a 'name=test password="$pwd" update_password=always'
 ansible-doc -s copy
 
 - name: 文件拷贝模块
-  action: copy
+  copy:
     src: # 指定源文件路径. 如果拷贝的源是文件夹. 结尾为 '/' 表示仅拷贝文件夹下的文件, 不包含源目录. 结尾没有 '/' 表示拷贝源目录.
     content: # 当用 content 替代 src 时, content 的值作为目标文件的内容.
     dest: # 必选项. 指定目标文件路径
@@ -179,7 +179,7 @@ ansible-doc -s copy
 ansible-doc -s service
 
 - name: 服务管理模块
-  action: service
+  service:
     name: # 服务名称
     enabled: # 是否开机启动
     arguments: # 附加参数
@@ -198,7 +198,7 @@ ansible all -m service -a 'name=nginx pattern=/usr/sbin/nginx state=started'
 ansible-doc -s setup
 
 - name: 获取目标主机参数信息, 例如: IP, CPU 数量, 网卡信息等
-  action: setup
+  setup:
     fact_path: # 目标机上自定义信息目录. 默认: /etc/ansible/facts.d/ . 在目录下查找 *.fact 文件(ini 格式或 json 格式). 这些自定义信息会放到结果中的 "ansible_local" 对象中.
     filter: # 过滤获取哪些信息. 默认: *
     gather_subset: # 获取参数子集. 可能的值有: all | min | hardware | network | virtual | ohai | facter. 可以用 '!' 标记该子集不收集. 多个子集用 comma 分割. 默认: all
@@ -211,7 +211,7 @@ ansible-doc -s setup
 ansible-doc -s cron
 
 - name: 定时任务模块
-  action: cron
+  cron:
     name: # 任务描述
     job: # 要执行的任务. 仅在 state=present 有效. 别名: value.
     state: # present: 创建任务; absent: 删除任务. 默认: present.
@@ -238,7 +238,7 @@ ansible-doc -s cron
 ansible-doc -s file
 
 - name: 文件管理模块
-  action: file
+  file:
     path: # 文件或目录的路径, 必选.
     group: # 文件/目录的属组
     mode: # 文件/目录的权限
@@ -256,7 +256,7 @@ ansible-doc -s file
 ansible-doc -s synchronize
 
 - name: 文件同步模块, 类似 rsync
-  action: synchronize
+  synchronize:
     src: # 必选, 源目录.
     dest: # 必选, 目标目录.
     archive: # yes/no: 是否启用归档, 默认: yes, 相当于同时开启 chechsum, recursive, links, perms, times, owner, gourp, -D
