@@ -42,6 +42,8 @@ ssh-keygen -t rsa
 
 ## 编写 /etc/ansible/hosts
 ## 所有 hosts 免密
+## 如果目标机密码一致, 则不要在 hosts 内写 ansible_ssh_pass=pwd, 使用 -k 在命令行写密码
+##    否则, 在 hosts 的主机后填写 ansible_ssh_pass=pwd, 去掉 -k 参数
 ansible-playbook -k add-ssh-keys.yml
 
 ## ansible 默认模块是 command, 但它不支持管道. 用支持管道的模块 shell 替代.
