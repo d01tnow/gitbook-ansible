@@ -138,6 +138,7 @@ ansible-doc -s user
     password: # 密码, 必须是加密后的字符串.
     update_password: # always: 更新密码. on_create: 仅对新创建用户设置该密码
     uid: # 用户的UID
+    append: # yes/no: 是否扩充组信息. yes 表示 groups 内容扩充到用户的组中. no 表示 groups 内容覆盖用户当前组信息
     state: # present: 添加用户, absent: 删除用户
     remove: # state=absent 时有效. yes/no: 是否删除用户的 home 目录. 等同于 userdel --remove user_name
     home: # 指定用户的 home 目录

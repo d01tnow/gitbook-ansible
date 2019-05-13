@@ -1,0 +1,9 @@
+---
+- name: Batch add groups
+  hosts: all
+  tasks:
+    ## 添加组, gid 可选
+    - group: name="{{item.name}}" state="present" gid="{{item.id}}"
+      with_items:
+      - {name: "g1", id: 1001}
+      - {name: "g2", id: 1002}
