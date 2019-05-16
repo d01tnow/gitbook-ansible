@@ -264,3 +264,41 @@ ansible-doc -s synchronize
 
 
 ```
+
+### lineinfile
+
+``` shell
+ansible-doc -s lineinfile
+
+- name: 可以对文本文件进行修改. 主要操作: 替换行, 插入行, 删除行
+  lineinfile:
+    path: # 必须. 操作的文件
+    state: # present: 添加行或替换行, 为默认值. absent: 删除行
+    line: # 在 state=present 时必须. 指定替换为或插入的行
+    backrefs: # yes/no. 默认: no. state=present 时有效. 默认情况下, 正则表达式不匹配时在文件尾部插入行. =yes时, 忽略 insertbefore 和 insertafter , 正则表达式不匹配时不做改动.
+    backup: # yes/no. no: 修改前不备份, 默认值. yes: 修改前备份.
+    create: # state=present 时有效. yes/no. no: 无目标文件时不创建, 默认值. yes: 无目标文件时创建文件.
+    regexp: # 正则表达式, 用于匹配行, 默认值: null. 替换时有多行匹配, 则只有最后匹配行被替换. 删除时, 所有匹配行都被删除.
+    firstmatch: # yes/no. 在 insertafter 或 insertbefore 是正则表达式时有效. 是否选择第一个匹配行.
+    insertafter: # state=present 时有效, EOF 或 正则表达式. EOF: 文件尾, 默认值. 如果用正则表达式, 默认情况下, 插入最后匹配行之后; 如果设置了 firstmatch=yes, 则插入在第一个匹配行之后; 没有匹配行时, 插入到末尾.
+    insertbefore: # state=present 时有效, BOF 或 正则表达式. 如果用正则表达式, 默认情况下, 插入最后匹配行之前; 如果设置了 firstmatch=yes, 则插入在第一个匹配行之前; 没有匹配行时, 插入到末尾.
+
+```
+
+### wait_for
+
+``` shell
+ansible-doc -s wait_for
+- name: 等待文件, 端口状态满足条件, 等待活跃链接被关闭
+  wait_for:
+    connect_timeout: # 连接的超时时间, 单位: 秒. 默认 5 秒.
+    delay: # 开始轮询之前等待的时间, 单位: 秒. 默认 0 秒.
+    exclude_hosts: # 与 state=drained 配合使用. 用于指定，在寻找活跃的TCP链接的时候，要忽略的主机或IP列表.
+    host: # 指明等待的主机名或IP
+    path: # 在继续之前, 文件系统上必须存在的文件的路径
+    port: # 要轮询的端口号
+    search_regex: # 用于匹配文件或socket连接的字符串
+    state: # present/started/stopped/absent/drained. 默认: started. 检查端口时: started 会等待端口打开; stopped 会等待端口关闭; drained 会检查活跃的连接. 检查文件或搜索字符串时: present或started 会等待文件或socket连接存在; absent 会等待文件或socket连接不存在或被移除
+    sleep: # 开始检查之前等待的时间. 单位: 秒.
+    timeout: # 等待的超时时间. 单位: 秒. 默认: 300 秒. 没有其他参数时, 等效于 sleep. 有其他参数时, 如果超时则该任务返回错误.
+```
