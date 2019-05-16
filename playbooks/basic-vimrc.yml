@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Config vim witch basic rc
+      copy:
+          dest: ~/.vimrc
+          src: ./basic-vimrc

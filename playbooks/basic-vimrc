@@ -1,0 +1,94 @@
+" 不用 vi 的键盘模式
+set nocompatible
+
+" 配置保存时生效
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
+set laststatus=2  " 总是显示状态栏
+set t_Co=256  " 使用256色, 在配色方案(colorscheme)前设置
+
+" 设置行号开关键, 便于用鼠标选择即拷贝时不带行号, 不带缩进线
+:noremap <F2> <Esc>:set nu!<CR>:set relativenumber!<CR>:IndentLinesToggle<CR>
+
+" 粘贴模式开关键
+set pastetoggle=<F3>
+
+" 安装插件后启用 类型插件
+" filetype on  " 侦测文件类型
+" filetype plugin on  " 载入文件类型插件
+" filetype indent on  " 不同类型的文件的缩进不同
+filetype plugin indent on  " 这个配置等同于上面3条配置
+
+
+" GUI
+if has('gui_running')
+    set guioptions-=m  " 隐藏菜单
+    set guioptions-=T  " 隐藏工具栏
+    " 隐藏滚动条
+    set guioptions-=l
+    set guioptions-=L
+    set guioptions-=r
+    set guioptions-=R
+
+endif
+
+" 界面
+set cmdheight=2  " 设置命令行高度
+" 状态栏显示信息
+"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
+set showcmd  " 状态栏显示当前执行的命令
+
+"  编辑器
+syntax enable "语法高亮
+syntax on  " 配色方案语法高亮替代默认方案
+set ruler  "  显示标尺
+set cursorline " 高亮光标所在行
+set showmatch  " 高亮匹配的括号
+set hlsearch  " 高亮显示被搜索字符
+set incsearch " 输入搜索内容时就显示搜索结果
+
+
+set nu  " 打开行号
+set relativenumber " 打开相对行号
+set nowrap  "禁止折行
+set autoindent  " 继承前一行的缩进
+set smartindent  " 为 C 程序提供自动缩进
+" 使用 :retab 命令重新处理 tab 和 空格
+set tabstop=2  " 设置 tab 长度
+set shiftwidth=2  " 设置 > 命令移动时的宽度
+set expandtab  " 用空格替代 tab
+set softtabstop=2  " 使用退格键时一次可以删除的空格数
+set backspace=indent,eol,start  " 退格键可以跨越行
+set whichwrap=h,l,b,s,<,>,[,]  " 跨行移动
+set completeopt=longest,menu  " 设置智能补全
+set wildmenu  " 自动补全命令时使用菜单式列表
+set iskeyword+=@,#,$,%,-,_  " 带有这些符号的单词不要被换行分隔
+set scrolloff=3  " 光标到顶部或底部保持3行距离
+
+" encoding
+set encoding=utf-8  " vim 内部使用的编码
+set termencoding=utf-8  " 终端显示的编码
+set fileencoding=utf-8 " 编辑文件的编码格式
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,cp936,gb2312  " 打开文件的编码列表
+
+" 代码折叠
+set foldenable  " 启用折叠
+set foldmethod=syntax  " 使用语法高亮定义代码折叠
+setlocal foldlevel=1  " 设置折叠层数
+set foldlevelstart=99 " 打开文件时不折叠
+" 使用空格来开关折叠
+nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+" 备份
+set nobackup  " 修改时不备份
+
+" map
+" 默认的 mapleader="\"
+let mapleader=";"
+vmap <C-c> "+y
+nmap <leader>tr :NERDTreeToggle<CR>
+
+" 按 <leader>ev 打开配置文件
+nmap <leader>ev :e $MYVIMRC<CR>
+" 按 <leader>sv 重新加载配置文件
+nmap <leader>sv :so $MYVIMRC<CR>
