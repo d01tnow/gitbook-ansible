@@ -1,0 +1,20 @@
+
+---
+
+- hosts: all
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: modify selinux config
+    lineinfile:
+      dest: /etc/selinux/config
+      regexp: '^SELINUX='
+      ## disabled: 关闭, enforcing: 开启
+      line: 'SELINUX=disabled'
+  - name: Temporarily disable selinux
+    shell: setenforce 0
+  - command: getenforce
+    register: result
+  - name: output getenforce
+    debug: var=result

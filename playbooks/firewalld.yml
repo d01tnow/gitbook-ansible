@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: shutdown firewalld and disable firewalld
+    service: name=firewalld state=stopped enabled=false
