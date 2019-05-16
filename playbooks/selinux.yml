@@ -16,5 +16,6 @@
     shell: setenforce 0
   - command: getenforce
     register: result
+    changed_when: false # 不计入任务统计值 changed 结果中.
   - name: output getenforce
     debug: var=result
