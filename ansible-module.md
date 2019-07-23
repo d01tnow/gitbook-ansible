@@ -1,7 +1,7 @@
 # Ansible 模块
 
-查看模块列表: ansible -l
-查看指定模块的详细帮助: ansible -s MODULE_NAME
+查看模块列表: ansible-doc -l
+查看指定模块的详细帮助: ansible-doc -s MODULE_NAME
 
 ## 常用模块
 
@@ -302,3 +302,15 @@ ansible-doc -s wait_for
     sleep: # 开始检查之前等待的时间. 单位: 秒.
     timeout: # 等待的超时时间. 单位: 秒. 默认: 300 秒. 没有其他参数时, 等效于 sleep. 有其他参数时, 如果超时则该任务返回错误.
 ```
+### unarchive
+
+ansible-doc -s unarchive
+- name: 拆包模块
+  unarchive:
+    src: 源文件绝对路径. 当 remote_src=no (默认)时, 拷贝本地路径上的源文件到目标机再拆包. remote_src=yes 时, src 指目标机上的路径.
+    dest: 目标绝对路径. 
+    mode: 文件权限. 例: 0777, 0600
+    group: 文件所属组
+    owner: 文件所属用户
+    creates: 一个文件或目录的绝对路径. 如果该路径的文件或目录已经存在, 则 *不* 执行该任务.
+    keep_newer: yes/no. 是否替换目标路径中已经存在的比包中更新的文件
