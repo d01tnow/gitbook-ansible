@@ -92,8 +92,8 @@ ssh_known_hosts:
     connection: local
     run_once: yes
     template:
-      dest: "{{ playbook_dir }}/ssh_known_hosts.yml"
-      src: "{{ playbook_dir }}/ssh_known_hosts.yml.j2"
+      dest: "{{ inventory_dir }}/ssh_known_hosts.yml"
+      src: "{{ inventory_dir }}/ssh_known_hosts.yml.j2"
     tags:
     - init
 
@@ -182,7 +182,7 @@ ansible-galaxy init common
 ~/ansible-init.sh
 ```
 
-2. 创建角色. 用角色来管理任务. 角色内部的目录结构都是约定好的, 不要修改.
+1. 创建角色. 用角色来管理任务. 角色内部的目录结构都是约定好的, 不要修改.
 
 ``` shell
 ## ansible-playbook 命令会查找 playbook.yml(剧本文件, 文件名可以修改. 在 ansible-playbook 命令的参数指定剧本文件)所在目录的 roles 目录下的 $role_name/tasks/main.yml 作为任务的入口.
@@ -191,7 +191,7 @@ cd roles
 ansible-galaxy init candy_console
 ```
 
-3. 编写 tasks
+1. 编写 tasks
 
    $PWD/roles/cand_console/tasks/main.yml .
 
@@ -258,7 +258,7 @@ ansible-galaxy init candy_console
 
 ```
 
-4. 编写变量
+1. 编写变量
 
    $PWD/roles/candy_console/vars/main.yml
 
@@ -271,7 +271,7 @@ service_name: candy-console-service
 
 ```
 
-5. 打包静态文件和目录结构
+1. 打包静态文件和目录结构
 
    假定目标目录结构为:
 
@@ -288,7 +288,7 @@ zip candy-console-service.zip candy-console-service/
 ## roles/$rolename/files/ 是 ansible 模块默认搜索的目录. 比如 "部署目录和静态文件" 任务中使用的 unarchive 模块, 仅需指定文件名即可, 无需指定目录.
 ```
 
-6. 修改可变文件
+1. 修改可变文件
 
    可变文件以 jinja2 文件为模板, 再通过 template 模块替换掉模板文件内部的变量后部署到目标机中.
 
@@ -494,7 +494,7 @@ jwtusing:
 
 ```
 
-7. 编写 playbook
+1. 编写 playbook
 
    ansible 将多个任务组合为一个剧本. 通过 role 方式管理相关的任务.
 
@@ -510,7 +510,7 @@ jwtusing:
     - role: candy_consol
 ```
 
-8. 执行 playbook
+1. 执行 playbook
 
 ``` shell
 ## ansible-playbook 执行剧本
@@ -538,8 +538,6 @@ ansible-doc -l
 ## 查看模块的文档
 ansible-doc -s 模块名
 ```
-
-
 
 下面介绍下常用的模块. 参数中"[]" 括起来为默认值.
 
@@ -583,8 +581,6 @@ ansible-doc -s ping
 
 ansible all -i inventory -m ping
 ```
-
-
 
 ### copy
 
@@ -662,8 +658,6 @@ ansible-doc -s template
 ## owner: 文件所属用户
 ```
 
-
-
 ### service
 
 服务管理模块
@@ -680,8 +674,3 @@ ansible-doc -s service
 ## pattern: 定义一个查询模式. 如果通过 status 命令查看服务状态时, 没有响应, 那么 service 模块通过 ps 命令在进程中通过该模式查找. 如果找到, 则认为该服务还在运行.
 ## sleep: 如果 state 指定为 restarted. 那么, 在 stop 和 start 之间等待多少秒.
 ```
-
-
-
-
-
