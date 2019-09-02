@@ -77,6 +77,8 @@ atlanta:
 
 ## 常用的 magic 变量
 
+[参考](https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html)
+
 - hostvars: 收集的所有主机的变量列表. 通过 hostsvars['$hostname']访问具体主机的变量. 比如: hostname=db.test.com 的 eth0 网卡的 ipv4 地址: hostvars['db.test.com'].ansible_eth0.ipv4.address
 - groups: 是 inventory 文件中的所有组的列表
 - group_names: 当前执行的 task 的目标主机所在的组.
