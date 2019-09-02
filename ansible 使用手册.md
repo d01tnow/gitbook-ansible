@@ -8,7 +8,7 @@ sudo yum install -y epel-release
 sudo yum install -y ansible
 
 # 安装 sshpass 和 bind-utils , 用于免密
-sudo yum install -y sshpass bind-utils
+sudo yum install -y sshpass
 
 ```
 
@@ -59,6 +59,15 @@ ntp_server=ntp.example.org
 
 #### 第三步 通过 playbook 免密
 
+保存下面的内容到 ssh_known_hosts.yml.j2 中
+
+``` yml
+ssh_known_hosts:
+{% for node in groups.all %}
+  - {{ hostvars[node].ansible_host }}
+{% endfor %}
+```
+
 保存下面的内容到 add-ssh-keys.yml 中
 
 ``` yml
@@ -68,18 +77,26 @@ ntp_server=ntp.example.org
 #
 #   ansible -i inventory.ini add-ssh-keys.yml
 #
-# 需要安装 sudo yum install -y sshpass bind-utils
+# 需要安装 sudo yum install -y sshpass
 #
+
 - name: Store known hosts of 'all' the hosts in the inventory file
   hosts: localhost
   connection: local
   vars:
     ssh_known_hosts_command: "ssh-keyscan -T 10"
     ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
-    ssh_known_hosts: "{{ groups['all'] }}"
-
 
   tasks:
+  - name: generate ssh_known_hosts.yml
+    connection: local
+    run_once: yes
+    template:
+      dest: "{{ playbook_dir }}/ssh_known_hosts.yml"
+      src: "{{ playbook_dir }}/ssh_known_hosts.yml.j2"
+    tags:
+    - init
+
   - name: For each host, scan for its ssh public key
     shell: "ssh-keyscan {{ item }},`dig +short {{ item }}`"
     with_items: "{{ ssh_known_hosts }}"
@@ -119,10 +136,12 @@ ntp_server=ntp.example.org
 使用 ansible-playbook 在目标机执行 add-ssh-keys.yml 进行目标机免密. 结果中全部为绿色文字描述成功信息, 红色文字描述失败信息.
 
 ``` shell
+## 先执行初始化
+ansible-playbook -i example-hosts add-ssh-keys.yml -t init
 ## 如果 inventory 中写了 ansible_ssh_pass 主机变量使用下面命令
-ansible-playbook -i example-hosts add-ssh-keys.yml
+ansible-playbook -i example-hosts --extra-vars="@ssh_known_hosts.yml" add-ssh-keys.yml
 ## 如果所有主机的登录密码一致, 使用下面命令. -k 表示询问登录用户的密码
-ansible-playbook -k -i example-hosts add-ssh-keys.yml
+ansible-playbook -k -i example-hosts --extra-vars="@ssh_known_hosts.yml" add-ssh-keys.yml
 ```
 
 ### 第一个 ansible 命令
