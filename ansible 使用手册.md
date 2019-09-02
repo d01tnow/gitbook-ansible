@@ -33,7 +33,7 @@ inventory 文件类似 /etc/hosts . 目的是指明目标主机和给目标主�
 
 ``` ini
 # 注释
-## 组名. 正确的组名, 主机别名遵守域名规范. 使用小写字母开头, 可以使用字母,数字, 可以用 dot(.) 分隔多个单词. 
+## 组名. 正确的组名, 主机别名遵守域名规范. 使用小写字母开头, 可以使用字母,数字, 可以用 dot(.) 分隔多个单词.
 ## 格式如下
 # [groupname]
 # target.host.alias key=value
@@ -43,8 +43,8 @@ inventory 文件类似 /etc/hosts . 目的是指明目标主机和给目标主�
 ## [] 用于分组. 下面例子中组名为 candy_console
 [candy_console]
 ## 组下面是主机信息. 第一列是主机别名. 后面是主机变量. ansible 内置了很多变量, 一般以 ansible_ 开头.
-## ansible_ssh_host: 主机ip或名称. 
-## ansible_ssh_port: ssh 端口. 
+## ansible_ssh_host: 主机ip或名称.
+## ansible_ssh_port: ssh 端口.
 ## ansible_ssh_user: ssh 登录用户
 ## ansible_ssh_pass: ssh 登录用户的密码. 一般在目标机登录用户不一致,并且未做免密前需要填写. 如果密码一致, 不用填写. 免密后删除该变量.
 n1.console.candy ansible_host=192.168.39.101
@@ -108,7 +108,7 @@ ntp_server=ntp.example.org
       - ssh
 
   - name: For each host, ssh-copy-id my ssh public keys to the host
-    shell: "sshpass -p {{ ansible_ssh_pass }} ssh-copy-id {{ item }}"
+    shell: "sshpass -p '{{ ansible_ssh_pass }}' ssh-copy-id {{ item }}"
     with_items: "{{ ssh_known_hosts }}"
     when: not (( ansible_ssh_pass is undefined ) or ( ansible_ssh_pass is none ) or ( ansible_ssh_pass | trim == ''))
     tags:
@@ -160,7 +160,7 @@ ansible-galaxy init common
 
 ``` shell
 ## 进人项目目录, 假定 ~/example
-~/ansible-init.sh 
+~/ansible-init.sh
 ```
 
 2. 创建角色. 用角色来管理任务. 角色内部的目录结构都是约定好的, 不要修改.
@@ -174,7 +174,7 @@ ansible-galaxy init candy_console
 
 3. 编写 tasks
 
-   $PWD/roles/cand_console/tasks/main.yml . 
+   $PWD/roles/cand_console/tasks/main.yml .
 
    内容简要说明: 格式为 {{ variable_name }} 是变量名. 变量来源: ansible 内置变量, ansible 收集的变量, 自定义变量. 自定义变量来源: 组变量在 $PWD/group_vars/ \*.yml ; 主机变量: $PWD/host_vars/\*.yml ; inventory 内定义变量: $PWD/example-hosts ; 角色变量: $PWD/roles/candy_console/vars/main.yml
 
@@ -187,7 +187,7 @@ ansible-galaxy init candy_console
   ## 任务使用的模块
   file:
     ## 模块参数
-    ## "{{ app_home }}" 为变量. 
+    ## "{{ app_home }}" 为变量.
     path: "{{ app_home }}"
     ## 模块参数
     state: directory
@@ -254,7 +254,7 @@ service_name: candy-console-service
 
 5. 打包静态文件和目录结构
 
-   假定目标目录结构为: 
+   假定目标目录结构为:
 
    ├── candy-console-service
    │   ├── config
@@ -508,7 +508,7 @@ ansible-playbook -i example-hosts -t "deploy,start" playbook.yml
 
 ## ansible 模块
 
-ansible 是通过模块实现具体的功能. 
+ansible 是通过模块实现具体的功能.
 
  通过 "ansible-doc -s 模块名" 查看模块的文档.
 
@@ -526,9 +526,9 @@ ansible-doc -s 模块名
 
 ### command
 
-ansible 默认的模块. 在 ansible 命令中不需要通过 -m 参数指定. 
+ansible 默认的模块. 在 ansible 命令中不需要通过 -m 参数指定.
 
-command 命令不支持管道. 如果需要用到管道需要使用 shell 模块. 
+command 命令不支持管道. 如果需要用到管道需要使用 shell 模块.
 
 ``` shell
 ## 查看文档
@@ -545,7 +545,7 @@ ansible all -i inventory -a "chdir=/app ls -l"
 
 ### shell
 
-支持管道. 可以替代 command 模块. 需要 -m shell 指明模块 
+支持管道. 可以替代 command 模块. 需要 -m shell 指明模块
 
 ``` shell
 ## 查看文档
@@ -576,7 +576,7 @@ ansible all -i inventory -m ping
 ansible-doc -s copy
 
 ## 参数
-## src: 源文件路径. 
+## src: 源文件路径.
 ## content: 当用 content 替代 src 时, content 的值作为目标文件的内容.
 ## dest: 必选. 目标文件路径
 ## force: [yes]/no. 是否覆盖同名文件.
@@ -617,7 +617,7 @@ ansible-doc -s unarchive
 
 ## 参数
 ## src: 源文件绝对路径. 当 remote_src=no (默认)时, 拷贝本地路径上的源文件到目标机再拆包. remote_src=yes 时, src 指目标机上的路径.
-## dest: 目标绝对路径. 
+## dest: 目标绝对路径.
 ## mode: 文件权限. 例: 0777, 0600
 ## group: 文件所属组
 ## owner: 文件所属用户
@@ -634,7 +634,7 @@ ansible-doc -s unarchive
 ansible-doc -s template
 
 ## 参数
-## src: 源文件路径. 
+## src: 源文件路径.
 ## dest: 目标文件路径.
 ## backup: yes/no . 是否创建备份文件.
 ## force: yes/no . 是否替换已存在文件.
@@ -655,7 +655,7 @@ ansible-doc -s service
 
 ## 参数
 ## name: 服务名称
-## enabled: yes/no. 是否开机启动. 
+## enabled: yes/no. 是否开机启动.
 ## state: start: 启动； stopped: 停止; restarted: 重启; reloaded: 重新加载
 ## arguments: 附加参数
 ## pattern: 定义一个查询模式. 如果通过 status 命令查看服务状态时, 没有响应, 那么 service 模块通过 ps 命令在进程中通过该模式查找. 如果找到, 则认为该服务还在运行.
