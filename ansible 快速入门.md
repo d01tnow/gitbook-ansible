@@ -7,11 +7,11 @@
 # 在当前目录创建"proj0"
 ansible-init.py -p proj0
 
-# 在当前目录创建"proj1", 并且初始化 "role1"       
+# 在当前目录创建"proj1", 并且初始化 "role1"
 ansible-init.py -p proj1 -r role1
 
 cd proj1
-# 进人项目目录后, 初始化 "role2"       
+# 进人项目目录后, 初始化 "role2"
 ansible-init -r role2
 
 ```
@@ -22,7 +22,7 @@ ansible-init -r role2
 
 - 编辑脚本主机: 只要有文本编辑器, ssh 客户端即可. 文本编辑器最好是支持语法高亮的. 推荐: VS Code, SublimeText, Atom等. 编辑后的脚本文件通过 XShell/XFtp, SecureCRT 传输到 ansible 主控机, 进行验证.
 - ansible主控机: 执行 ansible 命令的机器. 需要安装 ansible. 做好免密. @俞建虎会初始化.
-- ansible被控机: 执行 ansible 任务的机器. 
+- ansible被控机: 执行 ansible 任务的机器.
 
 
 
@@ -34,8 +34,8 @@ ansible-init -r role2
 
 ``` shell
 # ansible_practice 目录下
-# 通过"脚手架"工具创建项目, 
-python ./ansible-init.py -p first_project 
+# 通过"脚手架"工具创建项目,
+python ./ansible-init.py -p first_project
 # 进人项目目录, 通过"脚手架"工具创建第一个角色 example
 cd first_project
 python ../ansible-init.py -r example
@@ -66,7 +66,7 @@ ansible 已经定义的变量. [参考](https://docs.ansible.com/ansible/latest/
 - hostvars: 收集的所有主机的变量列表. 通过 hostsvars['$hostname']访问具体主机的变量. 比如: hostname=db.test.com 的 eth0 网卡的 ipv4 地址: hostvars['db.test.com'].ansible_eth0.ipv4.address
 - groups: 是 inventory 文件中的所有组的列表. 比如: groups.redis 等同于 groups['redis'], 访问 redis 组. all 代表所有组.
 - group_names: 当前执行的 task 的目标主机所在的组.
-- inventory_hostname: inventory 中的主机别名. ansible_hostname 是 ansible 自主发现的主机名. ansible_ssh_hostname
+- inventory_hostname: inventory 中的主机别名. ansible_host 是 ansible 自主发现的主机名. 是通用的连接插件变量. ansible_ssh_host 是 ssh 连接插件的变量.
 - inventory_hostname_short: inventory 中的主机别名的第一部分. e.g.: n1.test.com 返回 n1
 - inentory_hostnames: 从 inventory 中匹配' host patterns '的主机名列表
 - play_hosts: 当前 play 范围中可用的一组主机名.
@@ -154,7 +154,7 @@ ansible 已经定义的变量. [参考](https://docs.ansible.com/ansible/latest/
 
 角色的 templates/ 目录下文件都是 *.j2 格式的 jinja2 文件. jinja2解析器会解析模板文件, 通过变量替换, 控制语句控制输出内容, 生成目标文件.
 
-**注意:** 
+**注意:**
 
 - 由于 jinja2 中变量的语法 "{{ 变量名 }}" 同 yaml 文件中字典的定义冲突. 如果 yaml 文件中的变量定义为 key: {{ 变量名 }}, 需要用双引号把 {{ }} 括起来. 即: key: "{{ 变量名 }}".
 - {% %} 控制语句块后要加个换行. 并且, 一定要验证, 目标文件的格式是否符合要求. 原因是控制块引起缩进问题和换行问题. 目前未找到解决方法.
@@ -192,16 +192,16 @@ spring.redis.cluster.max-redirects=3
 说明:
 
 - core_server_redis_maxidle: 定义在 vars/main.yml 中的角色级变量;
-- node 是自定义变量; 
+- node 是自定义变量;
 
-- groups 是 ansible 内置变量, 列表类型, 内容是 inventory 文件中的所有组; 
+- groups 是 ansible 内置变量, 列表类型, 内容是 inventory 文件中的所有组;
 
-- hostvars也是 ansible 内置变量, 列表类型, 用来访问"主机级"变量; 
+- hostvars也是 ansible 内置变量, 列表类型, 用来访问"主机级"变量;
 
-- ansible_host 是 inventory 中定义的"主机级"变量; 
+- ansible_host 是 inventory 中定义的"主机级"变量;
 
 - redis_tcp_port 也是是 inventory 中定义的"主机级"变量;
-- loop 是 jinja2 内置变量, 指的循环变量. last 是该变量的一个[属性](http://docs.jinkan.org/docs/jinja2/templates.html#for), 如果是最后一次迭代，为 True . 
+- loop 是 jinja2 内置变量, 指的循环变量. last 是该变量的一个[属性](http://docs.jinkan.org/docs/jinja2/templates.html#for), 如果是最后一次迭代，为 True .
 - not 是 jinja2 的逻辑判断表达式. 对其后的逻辑表达式取反.
 - '.' 或 '[]' 用来获取对象的属性. 两者的区别是: obj[variable_name] 内可以使用变量访问对象的属性, 而 '.' 无法使用变量访问对象的属性, obj.variable_name 被转换为 obj['variable_name'].
 
@@ -225,7 +225,7 @@ spring.redis.cluster.nodes=192.168.43.101:6981, 192.168.43.93:6982, 192.168.43.1
 在主控机上执行.
 
 ``` shell
-# ansible 命令. 
+# ansible 命令.
 # 格式: ansible 执行任务的主机名 | 组名 | all -i inventory文件名 -m 模块名 -a "模块参数"
 # ansible 默认模块 commond. 参数就是 shell 命令. 但是, command 模块不支持管道. 如果需要请使用 shell
 # 比如: 查看当前用户
@@ -234,7 +234,7 @@ ansible all -i dev-inventory -a "id"
 ansible all -i dev-inventory -m shell -a "ls | wc -l"
 
 # 用 ping 模块, 查看主控机和被控机的连通性
-# 
+#
 ansible all -i dev-inventory -m ping
 
 ```
@@ -390,7 +390,7 @@ ansible-playbook -i inventory pb-debug.yml
 # 执行 tag 为 only 的任务
 # 仅执行一个任务, 就把该任务打上 only 标签, 删除其他任务的 only 标签
 ansible-playbook -i inventory pb-debug.yml -t only
-# 
+#
 ```
 
 
