@@ -80,7 +80,7 @@ atlanta:
 [参考](https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html)
 
 - hostvars: 收集的所有主机的变量列表. 通过 hostsvars['$hostname']访问具体主机的变量. 比如: hostname=db.test.com 的 eth0 网卡的 ipv4 地址: hostvars['db.test.com'].ansible_eth0.ipv4.address
-- groups: 是 inventory 文件中的所有组的列表
+- groups: 是 inventory 文件中的所有组的列表. 从测试结果看， ansible 中虽然有子组的概念， 但是，所有组都是同级的。也就是说，组名是全局的。同名组会合并。
 - group_names: 当前执行的 task 的目标主机所在的组.
 - inventory_hostname: inventory 中的主机别名. ansible_hostname 是 ansible 自主发现的主机名.
 - inventory_hostname_short: inventory 中的主机别名的第一部分. e.g.: n1.test.com 返回 n1

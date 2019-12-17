@@ -24,8 +24,6 @@ ansible-init -r role2
 - ansible主控机: 执行 ansible 命令的机器. 需要安装 ansible. 做好免密. @俞建虎会初始化.
 - ansible被控机: 执行 ansible 任务的机器.
 
-
-
 ## 编辑
 
 ### 编辑脚本的主机
@@ -52,7 +50,6 @@ python ../ansible-init.py -r example
 
 #### 变量的语法
 
-
 - 变量名可用字符为字母, 数字和下划线. 推荐用下划线连接的小写字母做变量名.
 - 在 ini-style 的 inventory 文件中使用 key=value 格式. 仅支持 boolean 和 string 类型的变量
 - 在 yaml 格式的文件内必须使用 key: value 格式.
@@ -75,7 +72,6 @@ ansible 已经定义的变量. [参考](https://docs.ansible.com/ansible/latest/
 - inventory_file: 是 inventory 的包含路径的文件名
 - role_path: 是当前 role 的目录名, 只有在 role 中才能使用.
 - role_name: 当前角色的名字, 只有在 role 中才能使用.
-
 
 #### 约定的名称
 
@@ -148,8 +144,6 @@ ansible 已经定义的变量. [参考](https://docs.ansible.com/ansible/latest/
 | check  | 检查                                |
 | svn    | 上传文件到 svn                      |
 
-
-
 ### 常见的 Jinja2 模板语法
 
 角色的 templates/ 目录下文件都是 *.j2 格式的 jinja2 文件. jinja2解析器会解析模板文件, 通过变量替换, 控制语句控制输出内容, 生成目标文件.
@@ -213,12 +207,9 @@ redis.maxIdle=10
 spring.redis.cluster.nodes=192.168.43.101:6981, 192.168.43.93:6982, 192.168.43.141:6983
 ```
 
-
-
 ## 执行
 
 从编辑主机传输 ansible 项目到 ansible 主控机.
-
 
 ### ansible 常用命令
 
@@ -393,8 +384,6 @@ ansible-playbook -i inventory pb-debug.yml -t only
 #
 ```
 
-
-
 ## 附录
 
 ### Magic 变量
@@ -498,4 +487,3 @@ ansible_user
 
 
 ```
-
